@@ -1,0 +1,43 @@
+<div class="loading-container" *ngIf="isLoading">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>
+
+<mat-card class="detail-card" *ngIf="!isLoading && user">
+  <mat-card-header>
+    <mat-card-title>{{ user.firstName }} {{ user.lastName }}</mat-card-title>
+    <mat-card-subtitle>@{{ user.username }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="info-row">
+      <span class="label">Email</span>
+      <span>{{ user.email }}</span>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="info-row">
+      <span class="label">Phone</span>
+      <span>{{ user.phone }}</span>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="info-row">
+      <span class="label">Status</span>
+      <span class="status-badge" [ngClass]="user.userStatus === 1 ? 'active' : 'inactive'">
+        {{ user.userStatus === 1 ? 'Active' : 'Inactive' }}
+      </span>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-stroked-button (click)="router.navigate(['/users'])">
+      <mat-icon>arrow_back</mat-icon> Kembali
+    </button>
+    <button mat-raised-button color="accent" (click)="goToEdit()">
+      <mat-icon>edit</mat-icon> Edit
+    </button>
+    <button mat-raised-button color="warn" (click)="deleteUser()">
+      <mat-icon>delete</mat-icon> Hapus
+    </button>
+  </mat-card-actions>
+</mat-card>

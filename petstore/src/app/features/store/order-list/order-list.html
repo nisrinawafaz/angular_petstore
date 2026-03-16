@@ -1,0 +1,92 @@
+<mat-card class="list-card">
+  <div class="list-header">
+    <div>
+      <h2>Daftar Order</h2>
+      <p class="subtitle">Kelola semua data order</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="goToCreate()">
+      <mat-icon>add</mat-icon> Tambah Order
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div class="table-container" *ngIf="!isLoading">
+    <table mat-table [dataSource]="paginatedOrders" class="full-width">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let order">{{ order.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="petId">
+        <th mat-header-cell *matHeaderCellDef>Pet ID</th>
+        <td mat-cell *matCellDef="let order">{{ order.petId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Qty</th>
+        <td mat-cell *matCellDef="let order">{{ order.quantity }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="shipDate">
+        <th mat-header-cell *matHeaderCellDef>Ship Date</th>
+        <td mat-cell *matCellDef="let order">{{ order.shipDate | date: 'dd MMM yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let order">
+          <span class="status-badge" [ngClass]="order.status">
+            {{ order.status | titlecase }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="complete">
+        <th mat-header-cell *matHeaderCellDef>Selesai</th>
+        <td mat-cell *matCellDef="let order">
+          <mat-icon [style.color]="order.complete ? '#2e7d32' : '#9e9e9e'">
+            {{ order.complete ? 'check_circle' : 'radio_button_unchecked' }}
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Aksi</th>
+        <td mat-cell *matCellDef="let order">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="goToDetail(order.id)"
+            matTooltip="Detail"
+          >
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteOrder(order.id)" matTooltip="Hapus">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell empty-state" [colSpan]="displayedColumns.length">
+          Tidak ada data order
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      [length]="totalOrders"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 25]"
+      [pageIndex]="pageIndex"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</mat-card>

@@ -1,0 +1,85 @@
+.list-card {
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.list-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+.full-width {
+  width: 100%;
+}
+
+.mat-column-username {
+  width: 140px;
+}
+.mat-column-firstName {
+  width: 120px;
+}
+.mat-column-lastName {
+  width: 120px;
+}
+.mat-column-email {
+  width: 180px;
+}
+.mat-column-phone {
+  width: 140px;
+}
+.mat-column-userStatus {
+  width: 90px;
+}
+.mat-column-actions {
+  width: 120px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+.status-badge.inactive {
+  background-color: #fce4ec;
+  color: #c62828;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+mat-paginator {
+  border-top: 1px solid #e0e0e0;
+  margin-top: 8px;
+}

@@ -1,0 +1,90 @@
+.list-card {
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.list-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-column-id {
+  width: 60px;
+}
+.mat-column-petId {
+  width: 80px;
+}
+.mat-column-quantity {
+  width: 60px;
+}
+.mat-column-shipDate {
+  width: 140px;
+}
+.mat-column-status {
+  width: 120px;
+}
+.mat-column-complete {
+  width: 80px;
+}
+.mat-column-actions {
+  width: 100px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.placed {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+.status-badge.approved {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+.status-badge.delivered {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+mat-paginator {
+  border-top: 1px solid #e0e0e0;
+  margin-top: 8px;
+}

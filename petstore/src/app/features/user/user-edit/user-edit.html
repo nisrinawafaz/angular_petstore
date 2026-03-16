@@ -1,0 +1,79 @@
+<div class="loading-container" *ngIf="isFetching">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>
+
+<mat-card class="form-card" *ngIf="!isFetching">
+  <mat-card-header>
+    <mat-card-title>Edit User</mat-card-title>
+    <mat-card-subtitle>{{ username }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" />
+          <mat-error *ngIf="firstName?.hasError('zodError')">{{
+            firstName?.getError('zodError')
+          }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" />
+          <mat-error *ngIf="lastName?.hasError('zodError')">{{
+            lastName?.getError('zodError')
+          }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="email?.hasError('zodError')">{{ email?.getError('zodError') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" />
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-error *ngIf="phone?.hasError('zodError')">{{ phone?.getError('zodError') }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password Baru</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" />
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="password?.hasError('zodError')">{{
+          password?.getError('zodError')
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Konfirmasi Password</mat-label>
+        <input matInput type="password" formControlName="confirmPassword" />
+        <mat-error *ngIf="confirmPassword?.hasError('zodError')">{{
+          confirmPassword?.getError('zodError')
+        }}</mat-error>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-stroked-button type="button" (click)="router.navigate(['/users'])">
+          Batal
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="editForm.invalid || isLoading"
+        >
+          <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+          <span *ngIf="!isLoading">Simpan</span>
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
