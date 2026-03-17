@@ -9,7 +9,7 @@ Aplikasi dipecah jadi komponen-komponen kecil yang bisa dipakai ulang. Setiap ko
 Sistem reaktivitas baru yang memungkinkan Angular mendeteksi perubahan data secara spesifik dan presisi, meningkatkan performa aplikasi secara signifikan tanpa harus mengecek seluruh komponen.
 
 **Standalone Components**
-Komponen yang tidak lagi bergantung pada NgModule. Hal ini membuat struktur kode lebih simpel, modular, dan mudah dipelajari bagi pemula.
+Komponen yang tidak lagi bergantung pada NgModule. Hal ini membuat struktur kode lebih simpel, modular, dan mudah dipelajari bagi pemula. (update angular terbaru)
 
 **Two-Way Data Binding**
 Sinkronisasi otomatis antara model (data) dan view (tampilan). maksudnya perubahan di input langsung update variable dan sebaliknya. Kalau di React manual pakai `onChange`.
@@ -56,6 +56,41 @@ Angular bisa bikin komponen, service, module, dll bisa lewat satu perintah.
 - @Input() / @Output() : cara komponen parent-child saling komunikasi, mirip props di React
 - Pipe : transformasi data langsung di template, contoh: `{{ harga | currency }}`
 - Observable : Observable lebih powerful: bisa di-cancel, bisa emit berkali-kali, bisa di-pipe
+
+---
+
+## Catatan
+
+1. Sintaks binding
+
+- {{ var }} tampilkan data ke HTML
+- [attr]="var" set atribut HTML dari ts
+- (event)="fn()" tangkap aksi user
+- [(ngModel)] dua arah, perlu import FormsModule
+
+2. Direktif template
+
+- \*ngIf / @if kondisi tampil/sembunyi
+- \*ngFor / @for perulangan list
+
+3. Struktur component
+
+- Setiap component terdiri dari 3 file: .ts .html .css
+- selector = nama tag HTML-nya
+- @Input() untuk terima data dari parent (seperti props React)
+- @Output() + EventEmitter untuk kirim event ke parent
+
+4. Lifecycle hooks
+
+- constructor khusus untuk Dependency Injection
+- ngOnInit untuk fetch data & logika awal : mirip useEffect([], [])
+- ngOnDestroy untuk cleanup, unsubscribe Observable
+- ngOnChanges dipanggil saat @Input() berubah
+
+5. Observable & RxJS
+
+- http.get() mengembalikan Observable, bukan data langsung
+- Pakai .subscribe() untuk ambil datanya
 
 ---
 
