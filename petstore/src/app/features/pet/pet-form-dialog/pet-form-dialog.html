@@ -1,0 +1,74 @@
+<app-base-dialog
+  mode="form"
+  [title]="isEdit ? 'Edit Pet' : 'Tambah Pet Baru'"
+  [confirmLabel]="isEdit ? 'Update' : 'Simpan'"
+  [isLoading]="isLoading"
+  [isFormInvalid]="petForm.invalid"
+  (confirm)="onSubmit()"
+  (cancel)="onCancel()"
+>
+  <form [formGroup]="petForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nama Pet</mat-label>
+      <input matInput formControlName="name" placeholder="Masukkan nama pet" />
+      <mat-icon matSuffix>pets</mat-icon>
+      <mat-error *ngIf="name?.hasError('zodError')">{{ name?.getError('zodError') }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Kategori (opsional)</mat-label>
+      <input
+        matInput
+        formControlName="category"
+        placeholder="Cari atau ketik kategori"
+        [matAutocomplete]="categoryAuto"
+      />
+      <mat-icon matSuffix>category</mat-icon>
+      <mat-autocomplete #categoryAuto="matAutocomplete" [displayWith]="displayCategory">
+        <mat-option *ngFor="let option of filteredCategories$ | async" [value]="option">
+          {{ option.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let s of statusOptions" [value]="s">
+          {{ s | titlecase }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="status?.hasError('zodError')">{{ status?.getError('zodError') }}</mat-error>
+    </mat-form-field>
+
+    <div class="section-label">
+      <span>Tags (opsional)</span>
+      <button mat-stroked-button type="button" class="btn-add-tag" (click)="addTag()">
+        <mat-icon>add</mat-icon> Tambah Tag
+      </button>
+    </div>
+    <div formArrayName="tags">
+      <div *ngFor="let tag of tags.controls; let i = index" class="tag-row">
+        <mat-form-field appearance="outline" class="tag-field">
+          <mat-label>Tag {{ i + 1 }}</mat-label>
+          <input matInput [formControlName]="i" placeholder="Nama tag" />
+        </mat-form-field>
+        <button mat-icon-button color="warn" type="button" (click)="removeTag(i)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="section-label">
+      <span>{{ isEdit ? 'Ganti Foto' : 'Foto Pet' }} (opsional)</span>
+    </div>
+    <div class="upload-area">
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput hidden />
+      <button mat-stroked-button class="btn-upload" type="button" (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon> Pilih Foto
+      </button>
+      <span class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+      <span class="file-name placeholder" *ngIf="!selectedFile">Belum ada foto dipilih</span>
+    </div>
+  </form>
+</app-base-dialog>

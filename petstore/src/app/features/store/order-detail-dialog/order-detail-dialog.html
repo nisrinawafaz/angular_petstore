@@ -1,0 +1,46 @@
+<app-base-dialog
+  mode="detail"
+  title="Detail Order"
+  closeLabel="Tutup"
+  (cancel)="onClose()"
+  [isLoading]="isLoading"
+>
+  <div class="info-row">
+    <span class="label">ID</span>
+    <span>{{ order?.id }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Pet ID</span>
+    <span>{{ order?.petId }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Quantity</span>
+    <span>{{ order?.quantity }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Ship Date</span>
+    <span>{{ order?.shipDate | date: 'dd MMM yyyy, HH:mm' }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Status</span>
+    <span class="status-badge" [ngClass]="order?.status">
+      {{ order?.status | titlecase }}
+    </span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Selesai</span>
+    <mat-icon [style.color]="order?.complete ? '#2e7d32' : '#9e9e9e'">
+      {{ order?.complete ? 'check_circle' : 'radio_button_unchecked' }}
+    </mat-icon>
+  </div>
+</app-base-dialog>

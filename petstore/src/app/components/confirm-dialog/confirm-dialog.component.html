@@ -1,0 +1,28 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+  <button mat-icon-button (click)="onCancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <div class="confirm-content">
+    <div class="warning-icon">
+      <mat-icon>warning_amber</mat-icon>
+    </div>
+    <p [innerHTML]="data.message"></p>
+    <p class="sub-message" *ngIf="data.subMessage">{{ data.subMessage }}</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button class="btn-cancel" (click)="onCancel()">Batal</button>
+  <button
+    mat-raised-button
+    class="btn-confirm"
+    [ngClass]="data.confirmColor || 'warn'"
+    (click)="onConfirm()"
+  >
+    {{ data.confirmLabel || 'Hapus' }}
+  </button>
+</mat-dialog-actions>

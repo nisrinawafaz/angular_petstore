@@ -11,7 +11,8 @@
 
 .sidenav {
   width: 240px;
-  background-color: #1e293b;
+  background-color: #fff7ed;
+  border-right: 1px solid #fed7aa;
 }
 
 .main-content {

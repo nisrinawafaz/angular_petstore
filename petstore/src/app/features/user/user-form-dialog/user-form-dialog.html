@@ -1,0 +1,94 @@
+<app-base-dialog
+  mode="form"
+  [title]="isEdit ? 'Edit User' : 'Tambah User Baru'"
+  [confirmLabel]="isEdit ? 'Update' : 'Simpan'"
+  [isLoading]="isLoading"
+  [isFormInvalid]="userForm.invalid"
+  (confirm)="onSubmit()"
+  (cancel)="onCancel()"
+>
+  <form [formGroup]="userForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        formControlName="username"
+        placeholder="Masukkan username"
+        [readonly]="isEdit"
+      />
+      <mat-icon matSuffix>person</mat-icon>
+      <mat-error *ngIf="username?.hasError('zodError')">{{
+        username?.getError('zodError')
+      }}</mat-error>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" placeholder="Nama depan" />
+        <mat-error *ngIf="firstName?.hasError('zodError')">{{
+          firstName?.getError('zodError')
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" placeholder="Nama belakang" />
+        <mat-error *ngIf="lastName?.hasError('zodError')">{{
+          lastName?.getError('zodError')
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" placeholder="Masukkan email" />
+      <mat-icon matSuffix>email</mat-icon>
+      <mat-error *ngIf="email?.hasError('zodError')">{{ email?.getError('zodError') }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" placeholder="Contoh: +6281234567890" />
+      <mat-icon matSuffix>phone</mat-icon>
+      <mat-error *ngIf="phone?.hasError('zodError')">{{ phone?.getError('zodError') }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ isEdit ? 'Password Baru' : 'Password' }}</mat-label>
+      <input
+        matInput
+        [type]="hidePassword ? 'password' : 'text'"
+        formControlName="password"
+        placeholder="Masukkan password"
+      />
+      <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="password?.hasError('zodError')">{{
+        password?.getError('zodError')
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Konfirmasi Password</mat-label>
+      <input
+        matInput
+        [type]="hideConfirmPassword ? 'password' : 'text'"
+        formControlName="confirmPassword"
+        placeholder="Ulangi password"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hideConfirmPassword = !hideConfirmPassword"
+      >
+        <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="confirmPassword?.hasError('zodError')">{{
+        confirmPassword?.getError('zodError')
+      }}</mat-error>
+    </mat-form-field>
+  </form>
+</app-base-dialog>

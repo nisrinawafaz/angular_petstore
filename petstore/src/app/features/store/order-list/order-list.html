@@ -4,10 +4,12 @@
       <h2>Daftar Order</h2>
       <p class="subtitle">Kelola semua data order</p>
     </div>
-    <button mat-raised-button color="primary" (click)="goToCreate()">
+    <button mat-raised-button class="btn-orange" (click)="openCreate()">
       <mat-icon>add</mat-icon> Tambah Order
     </button>
   </div>
+
+  <mat-divider></mat-divider>
 
   <div class="loading-container" *ngIf="isLoading">
     <mat-spinner diameter="40"></mat-spinner>
@@ -15,14 +17,9 @@
 
   <div class="table-container" *ngIf="!isLoading">
     <table mat-table [dataSource]="paginatedOrders" class="full-width">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell *matCellDef="let order">{{ order.id }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="petId">
-        <th mat-header-cell *matHeaderCellDef>Pet ID</th>
-        <td mat-cell *matCellDef="let order">{{ order.petId }}</td>
+      <ng-container matColumnDef="petName">
+        <th mat-header-cell *matHeaderCellDef>Pet Name</th>
+        <td mat-cell *matCellDef="let order">{{ order.petName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="quantity">
@@ -58,13 +55,18 @@
         <td mat-cell *matCellDef="let order">
           <button
             mat-icon-button
-            color="primary"
-            (click)="goToDetail(order.id)"
+            class="icon-btn-view"
+            (click)="openDetail(order)"
             matTooltip="Detail"
           >
             <mat-icon>visibility</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="deleteOrder(order.id)" matTooltip="Hapus">
+          <button
+            mat-icon-button
+            class="icon-btn-delete"
+            (click)="openDelete(order)"
+            matTooltip="Hapus"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </td>

@@ -1,0 +1,38 @@
+<app-base-dialog
+  mode="detail"
+  title="Detail User"
+  closeLabel="Tutup"
+  (cancel)="onClose()"
+  [isLoading]="isLoading"
+>
+  <div class="info-row">
+    <span class="label">Username</span>
+    <span>{{ user?.username }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Nama</span>
+    <span>{{ user?.firstName }} {{ user?.lastName }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Email</span>
+    <span>{{ user?.email }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Phone</span>
+    <span>{{ user?.phone }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Status</span>
+    <span class="status-badge" [ngClass]="user?.userStatus === 1 ? 'active' : 'inactive'">
+      {{ user?.userStatus === 1 ? 'Active' : 'Inactive' }}
+    </span>
+  </div>
+</app-base-dialog>

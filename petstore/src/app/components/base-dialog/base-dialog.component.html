@@ -1,0 +1,35 @@
+<div class="dialog-header">
+  <div>
+    <h2 mat-dialog-title>{{ title }}</h2>
+    <p class="subtitle" *ngIf="subtitle">{{ subtitle }}</p>
+  </div>
+  <button mat-icon-button (click)="cancel.emit()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40" color="warn"></mat-spinner>
+  </div>
+  <ng-content *ngIf="!isLoading"></ng-content>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" *ngIf="mode === 'form'">
+  <button mat-stroked-button class="btn-cancel" (click)="cancel.emit()">Batal</button>
+  <button
+    mat-raised-button
+    class="btn-orange"
+    (click)="confirm.emit()"
+    [disabled]="isFormInvalid || isLoading"
+  >
+    <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+    <span *ngIf="!isLoading">{{ confirmLabel }}</span>
+  </button>
+</mat-dialog-actions>
+
+<mat-dialog-actions align="end" *ngIf="mode === 'detail'">
+  <button mat-raised-button class="btn-orange" (click)="cancel.emit()">
+    {{ closeLabel }}
+  </button>
+</mat-dialog-actions>

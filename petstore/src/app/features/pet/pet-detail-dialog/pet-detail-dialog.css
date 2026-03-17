@@ -1,0 +1,54 @@
+.info-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  gap: 16px;
+}
+
+.label {
+  width: 90px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.available {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+.status-badge.pending {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+.status-badge.sold {
+  background-color: #fce4ec;
+  color: #c62828;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pet-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}

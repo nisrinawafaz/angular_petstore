@@ -1,37 +1,38 @@
 .sidebar-wrapper {
   height: 100%;
-  background-color: #1e293b;
-  color: white;
+  background-color: #fff7ed;
+  color: #1a1a1a;
+  border-right: 1px solid #fed7aa;
 }
 
 .sidebar-header {
   padding: 16px 20px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #94a3b8;
-  border-bottom: 1px solid #334155;
+  letter-spacing: 1.5px;
+  color: #f97316;
+  border-bottom: 1px solid #fed7aa;
 }
 
 mat-nav-list a {
-  color: #cbd5e1 !important;
+  color: #78350f !important;
   margin: 4px 8px;
   border-radius: 8px;
 }
 
 mat-nav-list a:hover {
-  background-color: #334155 !important;
-  color: white !important;
+  background-color: #ffedd5 !important;
+  color: #ea580c !important;
 }
 
 mat-nav-list a.active-link {
-  background-color: #1e40af !important;
+  background-color: #f97316 !important;
   color: white !important;
 }
 
 mat-icon {
-  color: #94a3b8 !important;
+  color: #fb923c !important;
 }
 
 .active-link mat-icon {

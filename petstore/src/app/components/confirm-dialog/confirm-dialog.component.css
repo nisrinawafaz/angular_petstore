@@ -1,0 +1,66 @@
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 16px 0;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+mat-dialog-content {
+  padding: 16px 24px !important;
+}
+
+.confirm-content {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.warning-icon mat-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  color: #f97316;
+}
+
+.confirm-content p {
+  font-size: 16px;
+  color: #1a1a1a;
+  margin: 12px 0 4px;
+}
+
+.sub-message {
+  font-size: 13px !important;
+  color: #888 !important;
+}
+
+mat-dialog-actions {
+  padding: 12px 24px !important;
+  border-top: 1px solid #f3f4f6;
+}
+
+.btn-cancel {
+  border-color: #d1d5db !important;
+  color: #6b7280 !important;
+}
+
+.btn-confirm {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  min-width: 80px;
+}
+
+.btn-confirm.warn {
+  background-color: #ef4444 !important;
+  color: white !important;
+}
+
+.btn-confirm.primary {
+  background-color: #f97316 !important;
+  color: white !important;
+}

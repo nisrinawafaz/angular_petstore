@@ -4,17 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+} from '../../../components/confirm-dialog/confirm-dialog.component';
 import { Pet, PetStatus } from '../../../core/models/pet.model';
 import { PetService } from '../../../services/pet.service';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PetDetailDialogComponent } from '../pet-detail-dialog/pet-detail-dialog';
+import { PetFormDialogComponent } from '../pet-form-dialog/pet-form-dialog';
 
 @Component({
   selector: 'app-pet-list',
@@ -32,27 +39,27 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
     MatChipsModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatTooltipModule,
     MatPaginatorModule,
+    MatDividerModule,
   ],
   templateUrl: './pet-list.html',
   styleUrls: ['./pet-list.css'],
 })
 export class PetListComponent implements OnInit {
   pets: Pet[] = [];
+  paginatedPets: Pet[] = [];
   isLoading = false;
   selectedStatuses: PetStatus[] = ['available'];
-  displayedColumns = ['id', 'name', 'category', 'status', 'actions'];
-
+  displayedColumns = ['name', 'category', 'status', 'actions'];
   statusOptions: PetStatus[] = ['available', 'pending', 'sold'];
-
   totalPets = 0;
   pageSize = 10;
   pageIndex = 0;
-  paginatedPets: Pet[] = [];
 
   constructor(
     private petService: PetService,
-    private router: Router,
+    private dialog: MatDialog,
     private snackBar: MatSnackBar,
   ) {}
 
@@ -78,8 +85,7 @@ export class PetListComponent implements OnInit {
 
   updatePaginatedData(): void {
     const start = this.pageIndex * this.pageSize;
-    const end = start + this.pageSize;
-    this.paginatedPets = this.pets.slice(start, end);
+    this.paginatedPets = this.pets.slice(start, start + this.pageSize);
   }
 
   onPageChange(event: PageEvent): void {
@@ -89,32 +95,59 @@ export class PetListComponent implements OnInit {
   }
 
   onStatusChange(): void {
+    this.pageIndex = 0;
     this.loadPets();
   }
 
-  goToCreate(): void {
-    this.router.navigate(['/pets/create']);
+  openCreate(): void {
+    const ref = this.dialog.open(PetFormDialogComponent, {
+      width: '600px',
+      data: { mode: 'create' },
+    });
+    ref.afterClosed().subscribe((result) => {
+      if (result) this.loadPets();
+    });
   }
 
-  goToDetail(id: number): void {
-    this.router.navigate(['/pets', id]);
+  openEdit(pet: Pet): void {
+    const ref = this.dialog.open(PetFormDialogComponent, {
+      width: '600px',
+      data: { mode: 'edit', pet },
+    });
+    ref.afterClosed().subscribe((result) => {
+      if (result) this.loadPets();
+    });
   }
 
-  goToEdit(id: number): void {
-    this.router.navigate(['/pets/edit', id]);
+  openDetail(pet: Pet): void {
+    this.dialog.open(PetDetailDialogComponent, {
+      width: '500px',
+      data: { pet },
+    });
   }
 
-  deletePet(id: number): void {
-    if (!confirm('Yakin ingin menghapus pet ini?')) return;
+  openDelete(pet: Pet): void {
+    const ref = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Hapus Pet',
+        message: `Yakin ingin menghapus pet <strong>${pet.name}</strong>?`,
+        subMessage: 'Tindakan ini tidak dapat dibatalkan.',
+        confirmLabel: 'Hapus',
+        confirmColor: 'warn',
+      } as ConfirmDialogData,
+    });
 
-    this.petService.deletePet(id).subscribe({
-      next: () => {
-        this.snackBar.open('Pet berhasil dihapus!', 'Tutup', { duration: 3000 });
-        this.loadPets();
-      },
-      error: () => {
-        this.snackBar.open('Gagal menghapus pet.', 'Tutup', { duration: 3000 });
-      },
+    ref.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.petService.deletePet(pet.id!).subscribe({
+          next: () => {
+            this.snackBar.open('Pet berhasil dihapus!', 'Tutup', { duration: 3000 });
+            this.loadPets();
+          },
+          error: () => this.snackBar.open('Gagal menghapus pet.', 'Tutup', { duration: 3000 }),
+        });
+      }
     });
   }
 }

@@ -3,15 +3,22 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router } from '@angular/router';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+} from '../../../components/confirm-dialog/confirm-dialog.component';
 import { Order } from '../../../core/models/order.model';
 import { OrderService } from '../../../services/order.service';
+import { OrderDetailDialogComponent } from '../order-detail-dialog/order-detail-dialog';
+import { OrderFormDialogComponent } from '../order-form-dialog/order-form-dialog';
 
 @Component({
   selector: 'app-order-list',
@@ -27,6 +34,7 @@ import { OrderService } from '../../../services/order.service';
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatPaginatorModule,
+    MatDividerModule,
   ],
   templateUrl: './order-list.html',
   styleUrls: ['./order-list.css'],
@@ -38,12 +46,12 @@ export class OrderListComponent implements OnInit {
   totalOrders = 0;
   pageSize = 5;
   pageIndex = 0;
-  displayedColumns = ['id', 'petId', 'quantity', 'shipDate', 'status', 'complete', 'actions'];
+  displayedColumns = ['petName', 'quantity', 'shipDate', 'status', 'complete', 'actions'];
 
   constructor(
     private orderService: OrderService,
-    private router: Router,
     private snackBar: MatSnackBar,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -77,24 +85,42 @@ export class OrderListComponent implements OnInit {
     this.updatePaginatedData();
   }
 
-  goToCreate(): void {
-    this.router.navigate(['/orders/create']);
+  openCreate(): void {
+    const ref = this.dialog.open(OrderFormDialogComponent, { width: '560px' });
+    ref.afterClosed().subscribe((result) => {
+      if (result) this.loadOrders();
+    });
   }
 
-  goToDetail(id: number): void {
-    this.router.navigate(['/orders', id]);
+  openDetail(order: Order): void {
+    this.dialog.open(OrderDetailDialogComponent, {
+      width: '480px',
+      data: { order },
+    });
   }
 
-  deleteOrder(id: number): void {
-    if (!confirm('Yakin ingin menghapus order ini?')) return;
-    this.orderService.deleteOrder(id).subscribe({
-      next: () => {
-        this.snackBar.open('Order berhasil dihapus!', 'Tutup', { duration: 3000 });
-        this.loadOrders();
-      },
-      error: () => {
-        this.snackBar.open('Gagal menghapus order.', 'Tutup', { duration: 3000 });
-      },
+  openDelete(order: Order): void {
+    const ref = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Hapus Order',
+        message: `Yakin ingin menghapus order <strong>#${order.id}</strong>?`,
+        subMessage: 'Tindakan ini tidak dapat dibatalkan.',
+        confirmLabel: 'Hapus',
+        confirmColor: 'warn',
+      } as ConfirmDialogData,
+    });
+
+    ref.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.orderService.deleteOrder(order.id!).subscribe({
+          next: () => {
+            this.snackBar.open('Order berhasil dihapus!', 'Tutup', { duration: 3000 });
+            this.loadOrders();
+          },
+          error: () => this.snackBar.open('Gagal menghapus order.', 'Tutup', { duration: 3000 }),
+        });
+      }
     });
   }
 }

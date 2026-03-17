@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,13 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { LoginRequest } from '../../../core/models/user.model';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
+    FormsModule,
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -27,44 +28,31 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  credentials: LoginRequest = {
+    username: '',
+    password: '',
+  };
   errorMessage = '';
   isLoading = false;
   hidePassword = true;
 
   constructor(
-    private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private cdr: ChangeDetectorRef,
-  ) {
-    this.loginForm = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-    });
-  }
-
-  get username() {
-    return this.loginForm.get('username');
-  }
-  get password() {
-    return this.loginForm.get('password');
-  }
+  ) {}
 
   onLogin(): void {
-    if (this.loginForm.invalid) return;
+    if (!this.credentials.username || !this.credentials.password) return;
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.loginForm.value).subscribe({
-      next: (response) => {
-        console.log('response:', response);
+    this.authService.login(this.credentials).subscribe({
+      next: () => {
         this.isLoading = false;
-        this.router.navigate(['/pets']);
+        this.router.navigate(['/orders']);
       },
-      error: (err) => {
-        console.log('error:', err);
+      error: () => {
         this.errorMessage = 'Login gagal. Periksa username dan password.';
         this.isLoading = false;
       },

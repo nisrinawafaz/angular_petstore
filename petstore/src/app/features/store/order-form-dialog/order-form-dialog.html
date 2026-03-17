@@ -1,0 +1,54 @@
+<app-base-dialog
+  mode="form"
+  title="Buat Order Baru"
+  confirmLabel="Buat Order"
+  [isLoading]="isLoading"
+  [isFormInvalid]="orderForm.invalid"
+  (confirm)="onSubmit()"
+  (cancel)="onCancel()"
+>
+  <form [formGroup]="orderForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Pet</mat-label>
+      <mat-select formControlName="pet">
+        <mat-option *ngFor="let p of pets" [value]="p"> {{ p.name }} — ID: {{ p.id }} </mat-option>
+      </mat-select>
+      <mat-error *ngIf="orderForm.get('pet')?.hasError('zodError')">
+        {{ orderForm.get('pet')?.getError('zodError') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Quantity</mat-label>
+      <input matInput type="number" formControlName="quantity" placeholder="Jumlah" />
+      <mat-icon matSuffix>shopping_cart</mat-icon>
+      <mat-error *ngIf="quantity?.hasError('zodError')">{{
+        quantity?.getError('zodError')
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Ship Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="shipDate" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="shipDate?.hasError('zodError')">{{
+        shipDate?.getError('zodError')
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let s of statusOptions" [value]="s">
+          {{ s | titlecase }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="status?.hasError('zodError')">{{ status?.getError('zodError') }}</mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="complete" class="complete-checkbox">
+      Tandai sebagai selesai
+    </mat-checkbox>
+  </form>
+</app-base-dialog>

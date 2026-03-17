@@ -1,37 +1,53 @@
-.list-card,
-.form-card,
-.detail-card {
-  max-width: 900px; /* sesuaikan */
-  margin: 0 auto;
+.list-wrapper {
+  padding: 0;
 }
 
 .list-card {
-  padding: 24px;
+  padding: 0;
   border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
 }
 
 .list-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 24px;
+  align-items: center;
+  padding: 20px 24px;
 }
 
 .list-header h2 {
   margin: 0;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .subtitle {
   margin: 4px 0 0;
-  color: #666;
-  font-size: 14px;
+  color: #888;
+  font-size: 13px;
+}
+
+.btn-orange {
+  background-color: #f97316 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+.btn-orange mat-icon {
+  color: white !important;
+}
+
+.filter-wrapper {
+  padding: 16px 24px 0;
 }
 
 .filter-field {
+  padding-top: 20px;
+  padding-left: 10px;
   width: 250px;
-  margin-bottom: 16px;
 }
 
 .loading-container {
@@ -42,10 +58,35 @@
 
 .table-container {
   overflow-x: auto;
+  padding: 0 8px;
 }
 
 .full-width {
   width: 100%;
+}
+
+::ng-deep .mat-mdc-header-cell {
+  background-color: #fff7ed !important;
+  color: #f97316 !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+}
+
+.mat-column-name {
+  width: 250px;
+  word-break: break-word;
+  white-space: normal;
+}
+.mat-column-category {
+  width: 200px;
+  word-break: break-word;
+  white-space: normal;
+}
+.mat-column-status {
+  width: 80px;
+}
+.mat-column-actions {
+  width: 130px;
 }
 
 .status-badge {
@@ -59,15 +100,23 @@
   background-color: #e8f5e9;
   color: #2e7d32;
 }
-
 .status-badge.pending {
   background-color: #fff8e1;
   color: #f57f17;
 }
-
 .status-badge.sold {
   background-color: #fce4ec;
   color: #c62828;
+}
+
+.icon-btn-view mat-icon {
+  color: #3b82f6 !important;
+}
+.icon-btn-edit mat-icon {
+  color: #f97316 !important;
+}
+.icon-btn-delete mat-icon {
+  color: #ef4444 !important;
 }
 
 .empty-state {
@@ -76,7 +125,7 @@
   color: #999;
 }
 
-.mat-paginator {
-  border-top: 1px solid #e0e0e0;
-  margin-top: 8px;
+mat-paginator {
+  border-top: 1px solid #fed7aa;
+  background-color: #fff7ed !important;
 }

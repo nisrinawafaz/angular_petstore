@@ -6,12 +6,22 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <form #loginForm="ngForm" (ngSubmit)="onLogin()">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Username</mat-label>
-          <input matInput type="text" formControlName="username" placeholder="Masukkan username" />
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="credentials.username"
+            name="username"
+            required
+            placeholder="Masukkan username"
+            #usernameField="ngModel"
+          />
           <mat-icon matSuffix>person</mat-icon>
-          <mat-error *ngIf="username?.hasError('required')"> Username wajib diisi </mat-error>
+          <mat-error *ngIf="usernameField.invalid && usernameField.touched">
+            Username wajib diisi
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
@@ -19,18 +29,21 @@
           <input
             matInput
             [type]="hidePassword ? 'password' : 'text'"
-            formControlName="password"
+            [(ngModel)]="credentials.password"
+            name="password"
+            required
             placeholder="Masukkan password"
+            #passwordField="ngModel"
           />
           <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
             <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
-          <mat-error *ngIf="password?.hasError('required')"> Password wajib diisi </mat-error>
+          <mat-error *ngIf="passwordField.invalid && passwordField.touched">
+            Password wajib diisi
+          </mat-error>
         </mat-form-field>
 
-        <mat-error *ngIf="errorMessage" class="api-error">
-          {{ errorMessage }}
-        </mat-error>
+        <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
         <button
           mat-raised-button

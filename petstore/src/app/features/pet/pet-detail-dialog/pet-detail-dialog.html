@@ -1,0 +1,54 @@
+<app-base-dialog
+  mode="detail"
+  title="Detail Pet"
+  closeLabel="Tutup"
+  (cancel)="onClose()"
+  [isLoading]="isLoading"
+>
+  <div class="info-row">
+    <span class="label">ID</span>
+    <span>{{ pet?.id }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Nama</span>
+    <span>{{ pet?.name }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Kategori</span>
+    <span>{{ pet?.category?.name || '-' }}</span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Status</span>
+    <span class="status-badge" [ngClass]="pet?.status">
+      {{ pet?.status | titlecase }}
+    </span>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="info-row">
+    <span class="label">Tags</span>
+    <div class="tags-container">
+      <mat-chip *ngFor="let tag of pet?.tags">{{ tag.name }}</mat-chip>
+      <span *ngIf="!pet?.tags?.length">-</span>
+    </div>
+  </div>
+
+  <div class="info-row" *ngIf="pet?.photoUrls?.length">
+    <span class="label">Foto</span>
+    <div class="photos">
+      <img
+        *ngFor="let url of pet?.photoUrls"
+        [src]="url"
+        [alt]="pet?.name"
+        class="pet-photo"
+        (error)="$any($event.target).style.display = 'none'"
+      />
+    </div>
+  </div>
+</app-base-dialog>
