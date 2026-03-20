@@ -63,12 +63,28 @@
       <span>{{ isEdit ? 'Ganti Foto' : 'Foto Pet' }} (opsional)</span>
     </div>
     <div class="upload-area">
-      <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput hidden />
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        (change)="onFileSelected($event)"
+        #fileInput
+        hidden
+      />
       <button mat-stroked-button class="btn-upload" type="button" (click)="fileInput.click()">
         <mat-icon>upload</mat-icon> Pilih Foto
       </button>
-      <span class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</span>
-      <span class="file-name placeholder" *ngIf="!selectedFile">Belum ada foto dipilih</span>
+
+      <div class="file-list" *ngIf="selectedFiles.length > 0">
+        <span class="file-count">{{ selectedFiles.length }} foto dipilih:</span>
+        <div *ngFor="let file of selectedFiles" class="file-item">
+          <mat-icon>image</mat-icon>
+          <span>{{ file.name }}</span>
+        </div>
+      </div>
+      <span class="file-name placeholder" *ngIf="selectedFiles.length === 0">
+        Belum ada foto dipilih
+      </span>
     </div>
   </form>
 </app-base-dialog>

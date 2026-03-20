@@ -112,3 +112,30 @@ mat-dialog-actions {
 .btn-orange:disabled {
   background-color: #fed7aa !important;
 }
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.file-count {
+  font-size: 12px;
+  color: #f97316;
+  font-weight: 600;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #333;
+}
+
+.file-item mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #fb923c;
+}

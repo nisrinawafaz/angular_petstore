@@ -90,6 +90,11 @@ export class PetFormDialogComponent implements OnInit {
                 this.tags.push(this.fb.control(tag.name));
               });
 
+              this.photoUrls.clear();
+              pet.photoUrls?.forEach((url) => {
+                this.photoUrls.push(this.fb.control(url));
+              });
+
               this.isLoading = false;
             },
             error: () => {
@@ -132,6 +137,10 @@ export class PetFormDialogComponent implements OnInit {
     return this.petForm.get('tags') as FormArray;
   }
 
+  get photoUrls() {
+    return this.petForm.get('photoUrls') as FormArray;
+  }
+
   addTag(): void {
     this.tags.push(this.fb.control(''));
   }
@@ -139,21 +148,60 @@ export class PetFormDialogComponent implements OnInit {
     this.tags.removeAt(i);
   }
 
+  selectedFiles: File[] = [];
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files?.length) this.selectedFile = input.files[0];
+    if (input.files?.length) {
+      this.selectedFiles = Array.from(input.files);
+    }
   }
 
   onSubmit(): void {
     if (this.petForm.invalid) return;
     this.isLoading = true;
 
+    if (this.selectedFiles.length > 0) {
+      this._uploadThenSubmit();
+    } else {
+      this._submitPet([]);
+    }
+  }
+
+  private _uploadThenSubmit(): void {
+    const uploadPromises = this.selectedFiles.reduce(
+      (chain, file) =>
+        chain.then((urls: string[]) =>
+          this.petService
+            .uploadImage(0, file)
+            .toPromise()
+            .then(() => {
+              // simulasi URL karena api tidak return URL
+              const url = `https://petstore.swagger.io/v2/pet/image_${Date.now()}_${urls.length}`;
+              return [...urls, url];
+            }),
+        ),
+      Promise.resolve([] as string[]),
+    );
+
+    uploadPromises
+      .then((newUrls: string[]) => {
+        const existingUrls = this.isEdit ? this.photoUrls.value : [];
+        this._submitPet([...existingUrls, ...newUrls]);
+      })
+      .catch(() => {
+        this.isLoading = false;
+        this.snackBar.open('Gagal upload foto.', 'Tutup', { duration: 3000 });
+      });
+  }
+
+  private _submitPet(photoUrls: string[]): void {
     const val = this.petForm.value;
     const payload: Pet = {
       ...(this.isEdit && this.data.pet?.id ? { id: this.data.pet.id } : {}),
       name: val.name,
       status: val.status,
-      photoUrls: [],
+      photoUrls,
       category: val.category ?? undefined,
       tags: val.tags.filter((t: string) => t.trim()).map((t: string) => ({ name: t })),
     };
@@ -163,16 +211,7 @@ export class PetFormDialogComponent implements OnInit {
       : this.petService.addPet(payload);
 
     request$.subscribe({
-      next: (pet) => {
-        if (this.selectedFile && pet.id) {
-          this.petService.uploadImage(pet.id, this.selectedFile).subscribe({
-            next: () => this._onSuccess(),
-            error: () => this._onSuccess('tersimpan tapi foto gagal diupload'),
-          });
-        } else {
-          this._onSuccess();
-        }
-      },
+      next: () => this._onSuccess(),
       error: () => {
         this.isLoading = false;
         this.snackBar.open(`Gagal ${this.isEdit ? 'mengupdate' : 'membuat'} pet.`, 'Tutup', {
