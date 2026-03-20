@@ -89,6 +89,9 @@
       <mat-error *ngIf="confirmPassword?.hasError('zodError')">{{
         confirmPassword?.getError('zodError')
       }}</mat-error>
+      <mat-error *ngIf="confirmPassword?.hasError('passwordMismatch')">
+        Password tidak sama
+      </mat-error>
     </mat-form-field>
   </form>
 </app-base-dialog>

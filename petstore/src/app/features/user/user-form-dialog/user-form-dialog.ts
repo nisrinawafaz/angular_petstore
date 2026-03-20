@@ -10,6 +10,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BaseDialogComponent } from '../../../components//base-dialog/base-dialog.component';
 import { User } from '../../../core/models/user.model';
 import { createUserSchema, editUserSchema } from '../../../core/schemas/user.schema';
+import { passwordMatchValidator } from '../../../core/validators/user.validator';
 import { zodFieldValidator } from '../../../core/validators/zod.validator';
 import { UserService } from '../../../services/user.service';
 
@@ -48,18 +49,21 @@ export class UserFormDialogComponent implements OnInit {
     const schema = this.isEdit ? editUserSchema : createUserSchema;
     this.isLoading = this.isEdit ? true : false;
 
-    this.userForm = this.fb.group({
-      username: [
-        { value: '', disabled: this.isEdit },
-        [zodFieldValidator(createUserSchema, 'username')],
-      ],
-      firstName: ['', [zodFieldValidator(schema, 'firstName')]],
-      lastName: ['', [zodFieldValidator(schema, 'lastName')]],
-      email: ['', [zodFieldValidator(schema, 'email')]],
-      phone: ['', [zodFieldValidator(schema, 'phone')]],
-      password: ['', [zodFieldValidator(schema, 'password')]],
-      confirmPassword: ['', [zodFieldValidator(schema, 'confirmPassword')]],
-    });
+    this.userForm = this.fb.group(
+      {
+        username: [
+          { value: '', disabled: this.isEdit },
+          [zodFieldValidator(createUserSchema, 'username')],
+        ],
+        firstName: ['', [zodFieldValidator(schema, 'firstName')]],
+        lastName: ['', [zodFieldValidator(schema, 'lastName')]],
+        email: ['', [zodFieldValidator(schema, 'email')]],
+        phone: ['', [zodFieldValidator(schema, 'phone')]],
+        password: ['', [zodFieldValidator(schema, 'password')]],
+        confirmPassword: ['', [zodFieldValidator(schema, 'confirmPassword')]],
+      },
+      { validators: passwordMatchValidator() },
+    );
   }
 
   ngOnInit(): void {
